@@ -65,4 +65,61 @@ public class Order {
 
     /* ----- 연관관계 메소드 ----- */
 
+
+    /* ----- 비즈니스 로직 ----- */
+
+    /**
+     * 주문 생성
+     * @param member
+     * @param delivery
+     * @param orderItems
+     * @return Order
+     */
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .orderDate(LocalDateTime.now())
+                .status(OrderStatus.ORDER)
+                .build();
+
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+
+        return order;
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void cancelOrder() {
+
+        if (this.delivery.getStatus() == DeliveryStatus.COMPLETED) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
+        this.status = OrderStatus.CANCEL;
+
+        for (OrderItem orderItem : this.orderItems) {
+            orderItem.cancel();
+        }
+
+    }
+
+    /**
+     * 전체 주문 가격 조회
+     * @return int
+     */
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : this.orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
+    /* ----- 비즈니스 로직 ----- */
+
 }

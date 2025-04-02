@@ -16,6 +16,7 @@ public class Delivery {
     @Id @GeneratedValue
     private Long id;
 
+    @JoinColumn(name = "order_id")
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 

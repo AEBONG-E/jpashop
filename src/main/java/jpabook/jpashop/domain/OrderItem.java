@@ -40,4 +40,41 @@ public class OrderItem {
         this.order = order;
     }
 
+    /* ----- 비즈니스 로직 ----- */
+
+    /**
+     * 주문 상품 생성
+     * @param item
+     * @param orderPrice
+     * @param count
+     * @return OrderItem
+     */
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+        OrderItem orderItem = OrderItem.builder()
+                .item(item)
+                .orderPrice(orderPrice)
+                .count(count)
+                .build();
+
+        item.removeStock(count);
+        return orderItem;
+    }
+
+    /**
+     * 주문 상품취소 재고수량 원복
+     */
+    public void cancel() {
+        getItem().addStock(this.count);
+    }
+
+    /**
+     * 주문상품 전체 가격 조회
+     * @return int
+     */
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
+    }
+
+    /* ----- 비즈니스 로직 ----- */
+
 }
