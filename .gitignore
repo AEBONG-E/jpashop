@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# QueryDSL Q-Class
+/build/generated/
+/src/main/generated/jpabook/jpashop/domain/*
