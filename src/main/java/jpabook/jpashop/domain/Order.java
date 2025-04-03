@@ -37,10 +37,9 @@ public class Order {
     private OrderStatus status; // [ORDER, CANCEL]
 
     @Builder
-    public Order(Long id, Member member, List<OrderItem> orderItems, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
+    public Order(Long id, Member member, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
         this.id = id;
         this.member = member;
-        this.orderItems = orderItems;
         this.delivery = delivery;
         this.orderDate = orderDate;
         this.status = status;
@@ -54,7 +53,7 @@ public class Order {
     }
 
     public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
+        this.orderItems.add(orderItem);
         orderItem.setOrderInfo(this);
     }
 
