@@ -1,6 +1,6 @@
 package jpabook.jpashop.repository;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
@@ -30,20 +30,21 @@ public class OrderQueryRepository {
                 .join(order.member, member)
                 .where(statusEq(orderSearch.getOrderStatus())
                                .and(nameLike(orderSearch.getMemberName()))
+
                 )
                 .limit(1000)
                 .fetch();
 
     }
 
-    private BooleanExpression statusEq(OrderStatus status) {
-        if (status == null) return null;
-        return order.status.eq(status);
+    private BooleanBuilder statusEq(OrderStatus status) {
+        return status == null ? new BooleanBuilder() :
+                new BooleanBuilder(order.status.eq(status));
     }
 
-    private BooleanExpression nameLike(String name) {
-        if (!StringUtils.hasText(name)) return null;
-        return member.name.like(name);
+    private BooleanBuilder nameLike(String name) {
+        return !StringUtils.hasText(name) ? new BooleanBuilder() :
+                new BooleanBuilder(member.name.like(name));
     }
 
 }
