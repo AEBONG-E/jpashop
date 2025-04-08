@@ -1,13 +1,10 @@
 package jpabook.jpashop.dto;
 
 import jpabook.jpashop.domain.OrderStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@ToString
-@Getter @Setter
+@Data
+@NoArgsConstructor
 public class OrderSearch {
 
     private String memberName;          // 회원 이름
