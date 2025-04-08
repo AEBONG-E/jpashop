@@ -2,6 +2,7 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 import jpabook.jpashop.domain.items.Book;
+import jpabook.jpashop.dto.UpdateItemDto;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -62,11 +63,11 @@ public abstract class Item {
         this.stockQuantity = restStock;
     }
 
-    public void updateBook(Long itemId, Book book) {
-        if (itemId == null || !itemId.equals(this.id) || book == null) return;
-        this.name = book.getName();
-        this.price = book.getPrice();
-        this.stockQuantity = book.getStockQuantity();
+    public void updateBook(Long itemId, UpdateItemDto updateInfo) {
+        if (itemId == null || !itemId.equals(this.id) || updateInfo == null) return;
+        this.name = updateInfo.getName();
+        this.price = updateInfo.getPrice();
+        this.stockQuantity = updateInfo.getStockQuantity();
     }
 
     /* ----- 비즈니스 로직 ----- */
