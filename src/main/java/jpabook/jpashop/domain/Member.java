@@ -36,4 +36,9 @@ public class Member {
         this.orders = orders;
     }
 
+    public void update(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
 }
