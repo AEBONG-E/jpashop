@@ -4,17 +4,38 @@ import jakarta.validation.Valid;
 import jpabook.jpashop.api.req.CreateMemberRequest;
 import jpabook.jpashop.api.req.UpdateMemberRequest;
 import jpabook.jpashop.api.res.CreateMemberResponse;
+import jpabook.jpashop.api.res.MemberListResponse;
+import jpabook.jpashop.api.res.ResultResponse;
 import jpabook.jpashop.api.res.UpdateMemberResponse;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService memberService;
+
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1() {
+        return this.memberService.findMembers();
+    }
+
+    @GetMapping("/api/v2/members")
+    public ResultResponse membersV2() {
+
+        List<MemberListResponse> response = this.memberService.findMembers().stream()
+                .map(MemberListResponse::of)
+                .collect(Collectors.toList());
+
+        return new ResultResponse(response);
+
+    }
 
     /**
      * 회원 등록 api v1 (엔티티를 파라미터로 활용하는 케이스)
@@ -63,6 +84,5 @@ public class MemberApiController {
                 .build();
 
     }
-
 
 }
