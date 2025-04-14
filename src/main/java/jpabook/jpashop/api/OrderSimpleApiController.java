@@ -7,6 +7,7 @@ import jpabook.jpashop.repository.OrderQueryRepository;
 import jpabook.jpashop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,8 +36,9 @@ public class OrderSimpleApiController {
     }
 
     @GetMapping("/api/v3/simple-orders")
-    public List<SimpleOrderListResponse> orderV3() {
-        return this.orderRepository.findAllWithMemberDelivery()
+    public List<SimpleOrderListResponse> orderV3(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                 @RequestParam(value = "limit", defaultValue = "100") int limit) {
+        return this.orderRepository.findAllWithMemberDelivery(offset, limit)
                 .stream().map(SimpleOrderListResponse::of).toList();
     }
 
@@ -47,7 +49,7 @@ public class OrderSimpleApiController {
 
     @GetMapping("/api/v5/simple-orders")
     public List<SimpleOrderListResponse> orderV5() {
-        return this.orderQueryRepository.findOrderDtoList(new OrderSearch());
+        return this.orderQueryRepository.findSimpleOrderDtoList(new OrderSearch());
     }
 
 }
